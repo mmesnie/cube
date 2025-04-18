@@ -74,16 +74,21 @@ Var
     Procedure Graph_Set;
     Begin
       Graphdriver:=detect;
-      InitGraph(Graphdriver,Graphmode,'c:\tp\bgi');
+      InitGraph(Graphdriver,Graphmode,'c:\usr\tp\bgi');
       Centerx:=Round(Getmaxx/2);
       Centery:=Round(Getmaxy/2);
     End;
 
     Procedure Graphing;
-    var a,b,c,
+    var a,b,c,iter,
     xp,yp,I,k,j:integer;
     xi,yi:real;
+    forecolor:integer;
+    backcolor:integer;
     Begin
+      iter:=0;
+      forecolor:=9;
+      backcolor:=8;
       j:=0;
       k:=75;
       xi:=0.5;
@@ -96,15 +101,19 @@ Var
         xr:=(a/360)*3.14159*2;
         yr:=(a/360)*3.14159*2;
         zr:=(a/360)*3.14159*2;
-        setcolor(9);
+        setcolor(forecolor);
         For I:= 1 to 8 do
           Begin
             centery:=centery+yi;
-            if centery<125 then yi:=0.25;
-            if centery>360 then yi:=-0.25;
+            {was 125}
+            if centery<60 then yi:=0.25;
+            {was 360}
+            if centery>425 then yi:=-0.25;
             centerx:=centerx+xi;
-            if centerx>=500 then xi:=-0.25;
-            if centerx<=125 then xi:=0.25;
+            {was 500}
+            if centerx>=600 then xi:=-0.25;
+            {was 125}
+            if centerx<=60 then xi:=0.25;
             xp:=round( G[1,I]*k+centerx);
             yp:=round(-G[2,I]*k+centery);
             D[I,1]:=xp;
@@ -123,7 +132,7 @@ Var
         Generate_g;
         Delay(5);
 
-        setcolor(8);
+        setcolor(backcolor);
         For I:= 1 to 3 do
           Line(d[I,1],d[I,2],d[I+1,1],d[I+1,2]);
         Line(d[1,1],d[1,2],d[4,1],d[4,2]);
@@ -132,6 +141,13 @@ Var
         Line(d[5,1],d[5,2],d[8,1],d[8,2]);
         For I:= 1 to 4 do
           Line(d[I,1],d[I,2],d[I+4,1],d[I+4,2]);
+
+        iter:=iter+1;
+        if iter=1000 then
+          begin
+            iter:=0;
+            backcolor:=backcolor+1;
+          end;
       end;
       Until Keypressed;
     End;
