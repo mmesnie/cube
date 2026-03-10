@@ -77,7 +77,7 @@ Var
     Procedure Graph_Set;
     Begin
       Graphdriver:=detect;
-      InitGraph(Graphdriver,Graphmode,'c:\usr\tp\bgi');
+      InitGraph(Graphdriver,Graphmode,'c:\windows\desktop\tpc\bgi');
       Centerx:=Round(Getmaxx/2);
       Centery:=Round(Getmaxy/2);
     End;
