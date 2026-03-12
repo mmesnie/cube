@@ -1,6 +1,10 @@
 
 { A bouncing cube }
 
+{ InitGraph (line 84) points to Turbo Pascal's bgi directory }
+
+{ Options -> Directories -> Unit directories points to TP's units directory }
+
 Program Three_Dimensional;
 
 Uses Crt,Graph;
@@ -17,7 +21,7 @@ Var
   Graphdriver,Graphmode:integer;
   Centerx,Centery:real;
 
-  Procedure Set_P;
+Procedure Set_P;
   Begin
     P[1,1] :=  1.0;
     P[2,1] :=  1.0;
@@ -45,7 +49,7 @@ Var
     P[3,8] := -1.0;
   End;
 
-  Procedure Set_T;
+Procedure Set_T;
   Begin
     T[1,1] :=  Cos(zr)*Cos(yr);
     T[1,2] :=  Cos(zr)*Sin(yr)*Sin(xr)-Sin(zr)*Cos(xr);
@@ -58,11 +62,12 @@ Var
     T[3,3] :=  Cos(yr)*Cos(xr);
   End;
 
-  Procedure Generate_G;
-    Var I,J,K:Integer;
+Procedure Generate_G;
+  Var
+    I,J,K:Integer;
     S:real;
-    Begin
-      For I:= 1 to 3 do
+  Begin
+    For I:= 1 to 3 do
       Begin
         For J:= 1 to 8 do
           Begin
@@ -72,90 +77,99 @@ Var
             G[I,J]:=S;
           End;
       End;
-    End;
+  End;
 
-    Procedure Graph_Set;
-    Begin
-      Graphdriver:=detect;
-      InitGraph(Graphdriver,Graphmode,'c:\windows\desktop\tpc\bgi');
-      Centerx:=Round(Getmaxx/2);
-      Centery:=Round(Getmaxy/2);
-    End;
+Procedure Graph_Set;
+  Begin
+    Graphdriver:=detect;
+    InitGraph(Graphdriver,Graphmode,'c:\usr\tp\bgi');
+    Centerx:=Round(Getmaxx/2);
+    Centery:=Round(Getmaxy/2);
+  End;
 
-    Procedure Graphing;
-    var a,b,c,iter,
+Procedure Graphing;
+  var
+    a,b,c,iter,
     xp,yp,I,k,j:integer;
     xi,yi:real;
     forecolor:integer;
     backcolor:integer;
-    Begin
-      iter:=0;
-      forecolor:=9;
-      backcolor:=8;
-      j:=0;
-      k:=75;
-      xi:=0.5;
-      yi:=0.5;
-      setbkcolor(0);
-      setlinestyle(0,0,0);
-      Repeat
+  Begin
+    iter:=0;
+    forecolor:=9;
+    backcolor:=8;
+    j:=0;
+    k:=75;
+    xi:=0.5;
+    yi:=0.5;
+    setbkcolor(0);
+    setlinestyle(0,0,0);
+    Repeat
       for a:= 0 to 360 do
-      begin
-        xr:=(a/360)*3.14159*2;
-        yr:=(a/360)*3.14159*2;
-        zr:=(a/360)*3.14159*2;
-        setcolor(forecolor);
-        For I:= 1 to 8 do
-          Begin
-            centery:=centery+yi;
-            {was 125}
-            if centery<60 then yi:=0.25;
-            {was 360}
-            if centery>425 then yi:=-0.25;
-            centerx:=centerx+xi;
-            {was 500}
-            if centerx>=600 then xi:=-0.25;
-            {was 125}
-            if centerx<=60 then xi:=0.25;
-            xp:=round( G[1,I]*k+centerx);
-            yp:=round(-G[2,I]*k+centery);
-            D[I,1]:=xp;
-            D[I,2]:=yp;
-          end;
-        For I:= 1 to 3 do
-          Line(d[I,1],d[I,2],d[I+1,1],d[I+1,2]);
-        Line(d[1,1],d[1,2],d[4,1],d[4,2]);
-        For I:= 5 to 7 do
-          Line(d[I,1],d[I,2],d[I+1,1],d[I+1,2]);
-        Line(d[5,1],d[5,2],d[8,1],d[8,2]);
-        For I:= 1 to 4 do
-          Line(d[I,1],d[I,2],d[I+4,1],d[I+4,2]);
+        begin
+          xr:=(a/360)*3.14159*2;
+          yr:=(a/360)*3.14159*2;
+          zr:=(a/360)*3.14159*2;
+          setcolor(forecolor);
+          For I:= 1 to 8 do
+            Begin
+              centery:=centery+yi;
+              {was 125}
+              if centery<60 then yi:=0.25;
+              {was 360}
+              if centery>425 then yi:=-0.25;
+              centerx:=centerx+xi;
+              {was 500}
+              if centerx>=600 then xi:=-0.25;
+              {was 125}
+              if centerx<=60 then xi:=0.25;
+              xp:=round( G[1,I]*k+centerx);
+              yp:=round(-G[2,I]*k+centery);
+              D[I,1]:=xp;
+              D[I,2]:=yp;
+            end;
+          For I:= 1 to 3 do
+            Line(d[I,1],d[I,2],d[I+1,1],d[I+1,2]);
+          Line(d[1,1],d[1,2],d[4,1],d[4,2]);
+          For I:= 5 to 7 do
+            Line(d[I,1],d[I,2],d[I+1,1],d[I+1,2]);
+          Line(d[5,1],d[5,2],d[8,1],d[8,2]);
+          For I:= 1 to 4 do
+            Line(d[I,1],d[I,2],d[I+4,1],d[I+4,2]);
 
-        Set_t;
-        Generate_g;
-        Delay(5);
+          Set_t;
+          Generate_g;
+          Delay(5);
 
-        setcolor(backcolor);
-        For I:= 1 to 3 do
-          Line(d[I,1],d[I,2],d[I+1,1],d[I+1,2]);
-        Line(d[1,1],d[1,2],d[4,1],d[4,2]);
-        For I:= 5 to 7 do
-          Line(d[I,1],d[I,2],d[I+1,1],d[I+1,2]);
-        Line(d[5,1],d[5,2],d[8,1],d[8,2]);
-        For I:= 1 to 4 do
-          Line(d[I,1],d[I,2],d[I+4,1],d[I+4,2]);
+          setcolor(backcolor);
+          For I:= 1 to 3 do
+            Line(d[I,1],d[I,2],d[I+1,1],d[I+1,2]);
+          Line(d[1,1],d[1,2],d[4,1],d[4,2]);
+          For I:= 5 to 7 do
+            Line(d[I,1],d[I,2],d[I+1,1],d[I+1,2]);
+          Line(d[5,1],d[5,2],d[8,1],d[8,2]);
+          For I:= 1 to 4 do
+            Line(d[I,1],d[I,2],d[I+4,1],d[I+4,2]);
 
-        iter:=iter+1;
-        if iter=1000 then
-          begin
-            iter:=0;
-            backcolor:=backcolor+1;
-          end;
-      end;
-      Until Keypressed;
-    End;
+          iter:=iter+1;
+          if iter=1000 then
+            begin
+              iter:=0;
+              backcolor:=backcolor+1;
+            end;
+        end;
+    Until Keypressed;
+  End;
+
+Procedure foo;
+  Var
+    i:integer;
+  Begin
+    i := 13;
+  End;
 
 Begin
+  foo;
   Clrscr;
   {xr:= (xr/360)*3.14159*2;}
   {yr:= (yr/360)*3.14159*2;}
